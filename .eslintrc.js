@@ -8,11 +8,6 @@ module.exports = {
     node: true,
     es2020: true
   },
-  globals: {
-    'require': 'readonly',
-    'module': 'readonly',
-    'exports': 'writable'
-  },
   extends: [
     "plugin:prettier/recommended"
   ]
