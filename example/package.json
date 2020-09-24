@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node ../bin/pack2.js",
+    "version": "node ../bin/pack2.js -V",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
