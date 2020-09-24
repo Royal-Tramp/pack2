@@ -1,7 +1,4 @@
-module.exports = function({
-  entryPath,
-  graphJSON
-}) {
+module.exports = function ({ entryPath, graphJSON }) {
   return `(function(graph){
   function require(module) {
     function localRequire(relativePath) {
@@ -15,5 +12,5 @@ module.exports = function({
   }
   require('${entryPath}')
 })(${graphJSON})
-`
-}
+`;
+};

@@ -7,7 +7,8 @@
     "pack2": "./bin/pack2.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint:js": "eslint --ext .js bin/ src/ --format codeframe",
+    "lint:js:fix": "eslint --fix --ext .js bin/ src/"
   },
   "repository": {
     "type": "git",
@@ -32,5 +33,11 @@
     "fs-extra": "^9.0.1",
     "package-name-regex": "^1.0.8",
     "uglify-js": "^3.10.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2"
   }
 }

@@ -5,6 +5,6 @@ module.exports = class Watch {
     this.pack2 = pack2;
   }
   addGraph(graph) {
-    return chokidar.watch(Object.keys(graph))
+    return chokidar.watch(Object.keys(graph));
   }
-}
+};
