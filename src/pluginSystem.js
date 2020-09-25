@@ -6,8 +6,8 @@ module.exports = class PluginSystem {
   init() {
     this.plugins.map((hooks) => {
       Object.keys(hooks).map((hookName) => {
-        this.pack2.on(hookName, hooks[hookName].bind(hooks))
-      })
-    })
+        this.pack2.on(hookName, hooks[hookName].bind(hooks));
+      });
+    });
   }
 };

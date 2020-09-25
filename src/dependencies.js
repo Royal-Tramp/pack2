@@ -1,7 +1,5 @@
 const Compiler = require('./Compiler.js');
-const {
-  DEPEND_GRAPH
-} = require('./hookNames.js');
+const { DEPEND_GRAPH } = require('./hookNames.js');
 
 module.exports = class Dependencies {
   constructor(pack2) {

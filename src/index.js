@@ -1,5 +1,5 @@
 const path = require('path');
-const { EventEmitter } = require('events')
+const { EventEmitter } = require('events');
 const UglifyJS = require('uglify-js');
 const chalk = require('chalk');
 const mergeOptions = require('merge-options');
@@ -10,16 +10,12 @@ const FileSystem = require('./fileSystem.js');
 const Dependencies = require('./dependencies.js');
 const Watch = require('./Watch.js');
 const runtimeTemplate = require('./runtimeTemplate.js');
-const hookNames  = require('./hookNames.js');
-const {
-  BUILD_START,
-  BUILD_END,
-  BUILD_CHANGE
-} = hookNames;
+const hookNames = require('./hookNames.js');
+const { BUILD_START, BUILD_END, BUILD_CHANGE } = hookNames;
 
 class Pack2 extends EventEmitter {
   constructor(options = {}) {
-    super()
+    super();
     this.options = mergeOptions.call(
       {
         concatArrays: true,
@@ -36,7 +32,7 @@ class Pack2 extends EventEmitter {
     this.init();
   }
   init() {
-    this.pluginSystem.init()
+    this.pluginSystem.init();
   }
   build() {
     return pipe([
@@ -94,6 +90,6 @@ function pack2(options) {
   return new Pack2(options);
 }
 
-Object.keys(hookNames).map((name) => pack2[name] = name)
+Object.keys(hookNames).map((name) => (pack2[name] = name));
 
 module.exports = pack2;
