@@ -14,6 +14,11 @@
     "lint:js": "eslint --ext .js bin/ src/ --format codeframe",
     "lint:js:fix": "eslint --fix --ext .js bin/ src/"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint:js:fix"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Royal-Tramp/pack2.git"
@@ -43,6 +48,7 @@
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
     "prettier": "^2.1.2"
   },
   "config": {
