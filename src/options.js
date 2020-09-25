@@ -13,4 +13,5 @@ module.exports = {
   babelrc: {
     presets: ['@babel/preset-env'],
   },
+  plugins: []
 };

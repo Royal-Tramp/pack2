@@ -1,4 +1,7 @@
 const Compiler = require('./Compiler.js');
+const {
+  DEPEND_GRAPH
+} = require('./hookNames.js');
 
 module.exports = class Dependencies {
   constructor(pack2) {
@@ -35,6 +38,7 @@ module.exports = class Dependencies {
   moduleAnalyser(fileName) {
     const content = this.pack2.fileSystem.read(fileName);
     const compiler = new Compiler({
+      pack2: this.pack2,
       fileName,
       content,
       parseOptions: this.pack2.options.parseOptions,
@@ -43,6 +47,7 @@ module.exports = class Dependencies {
     return compiler.compile();
   }
   createGraphJSON(graph, sourceMap) {
+    this.pack2.emit(DEPEND_GRAPH, graph, sourceMap);
     let graphJSON = JSON.stringify(graph, null, 2);
     return Object.keys(graph).reduce((graphJSON, fileName) => {
       return graphJSON.replace(`"__${fileName}__"`, () => sourceMap[fileName].code);
