@@ -25,7 +25,7 @@ module.exports = class Dependencies {
           js: `__${module.fileName}__`,
         };
         sourceMap[module.fileName] = {
-          code: `function(require, exports) {\n${module.code}\n}`,
+          code: `function(module, exports, require) {\n${module.code}\n}`,
         };
         return [graph, sourceMap];
       },
@@ -38,7 +38,7 @@ module.exports = class Dependencies {
     return compiler.compile();
   }
   createGraphJSON(graph, sourceMap) {
-    let graphJSON = JSON.stringify(graph);
+    let graphJSON = JSON.stringify(graph, null, 2);
     return Object.keys(graph).reduce((graphJSON, fileName) => {
       return graphJSON.replace(`"__${fileName}__"`, () => sourceMap[fileName].code);
     }, graphJSON);

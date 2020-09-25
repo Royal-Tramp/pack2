@@ -1,16 +1,27 @@
 module.exports = function ({ entryPath, graphJSON }) {
-  return `(function(graph){
-  function require(module) {
-    function localRequire(relativePath) {
-      return require(graph[module].dependencies[relativePath])
+  return `(function(modules){
+  var installedModules = {};
+  function require(moduleId) {
+    
+    if (installedModules[moduleId]) {
+      return installedModules[moduleId].exports;
     }
-    var exports = {};
-    (function(require, exports, js){
-      js(require,exports)
-    })(localRequire, exports, graph[module].js)
-    return exports;
+
+    var module = installedModules[moduleId] = {
+      i: moduleId,
+      l: false,
+      exports: {}
+    }
+
+    modules[moduleId].js.call(module.exports, module, module.exports, function(relativePath) {
+      return require(modules[moduleId].dependencies[relativePath])
+    });
+
+    module.l = true;
+
+    return module.exports;
   }
-  require('${entryPath}')
+  return require('${entryPath}')
 })(${graphJSON})
 `;
 };
