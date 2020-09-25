@@ -33,9 +33,7 @@
     "chalk": "^4.1.0",
     "chokidar": "^3.4.2",
     "commander": "^6.1.0",
-    "find-node-modules": "^2.1.0",
     "fs-extra": "^9.0.1",
-    "package-name-regex": "^1.0.8",
     "uglify-js": "^3.10.4"
   },
   "devDependencies": {
