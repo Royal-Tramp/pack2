@@ -7,7 +7,7 @@
     "pack2": "./bin/pack2.js"
   },
   "scripts": {
-    "commit": "npm run git:add && npm run git:commit",
+    "commit": "npm run lint:js:fix && npm run git:add && npm run git:commit",
     "git:add": "git add .",
     "git:commit": "git-cz",
     "commitizen:init": "commitizen init cz-conventional-changelog --save --save-exact",
