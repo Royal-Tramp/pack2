@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue.esm.browser.js';
+import Vue from 'vue/dist/vue.runtime.js';
 
 new Vue({
   el: '#app',

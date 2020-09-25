@@ -3,7 +3,7 @@ const UglifyJS = require('uglify-js');
 const chalk = require('chalk');
 const mergeOptions = require('merge-options');
 const defaultOptions = require('./options.js');
-const { pipe } = require('./utils.js');
+const { pipe, through } = require('./utils.js');
 const FileSystem = require('./fileSystem.js');
 const Dependencies = require('./dependencies.js');
 const Watch = require('./Watch.js');
@@ -28,19 +28,13 @@ class Pack2 {
     return pipe([
       this.analyseDependencies.bind(this),
       this.options.watch
-        ? this.pass(([graph, sourceMap]) => this.watchDependencies([graph, sourceMap]))
-        : this.pass(),
+        ? through(([graph, sourceMap]) => this.watchDependencies([graph, sourceMap]))
+        : through(),
       this.generateCode.bind(this),
-      this.options.compress ? this.compressCode.bind(this) : this.pass(),
-      this.pass(() => this.removeDist()),
-      this.pass((code) => this.generateBundle(code)),
+      this.options.compress ? this.compressCode.bind(this) : through(),
+      through(() => this.removeDist()),
+      through((code) => this.generateBundle(code)),
     ])(entryPath);
-  }
-  pass(handle) {
-    return (params) => {
-      handle && handle(params);
-      return params;
-    };
   }
   analyseDependencies(entryPath) {
     return this.dependencies.make(entryPath);
@@ -52,8 +46,8 @@ class Pack2 {
       return pipe([
         this.analyseDependencies.bind(this),
         this.generateCode.bind(this),
-        this.options.compress ? this.compressCode.bind(this) : this.pass(),
-        this.pass((code) => this.generateBundle(code)),
+        this.options.compress ? this.compressCode.bind(this) : through(),
+        through((code) => this.generateBundle(code)),
       ])(entryPath);
     });
   }
