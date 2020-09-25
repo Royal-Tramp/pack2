@@ -1,6 +1,7 @@
 const path = require('path');
 const UglifyJS = require('uglify-js');
 const chalk = require('chalk');
+const mergeOptions = require('merge-options');
 const defaultOptions = require('./options.js');
 const { pipe } = require('./utils.js');
 const FileSystem = require('./fileSystem.js');
@@ -10,10 +11,14 @@ const runtimeTemplate = require('./runtimeTemplate.js');
 
 class Pack2 {
   constructor(options = {}) {
-    this.options = {
-      ...defaultOptions,
-      ...options,
-    };
+    this.options = mergeOptions.call(
+      {
+        concatArrays: true,
+        ignoreUndefined: true,
+      },
+      defaultOptions,
+      options
+    );
     this.fileSystem = new FileSystem(this);
     this.dependencies = new Dependencies(this);
     this.watch = new Watch(this);

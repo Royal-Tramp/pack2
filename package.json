@@ -34,6 +34,7 @@
     "chokidar": "^3.4.2",
     "commander": "^6.1.0",
     "fs-extra": "^9.0.1",
+    "merge-options": "^3.0.3",
     "uglify-js": "^3.10.4"
   },
   "devDependencies": {

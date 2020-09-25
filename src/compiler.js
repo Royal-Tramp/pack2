@@ -6,24 +6,22 @@ const resolve = require('resolve');
 const Module = require('./Module.js');
 
 module.exports = class compiler {
-  constructor({ fileName, content }) {
+  constructor({ fileName, content, parseOptions, babelrc }) {
     this.fileName = fileName;
     this.content = content;
+    this.parseOptions = parseOptions;
+    this.babelrc = babelrc;
   }
   compile() {
     const fileName = this.fileName;
     const dirname = path.dirname(fileName);
     const dependencies = {};
 
-    const ast = parser.parse(this.content, {
-      sourceType: 'module',
-    });
+    const ast = parser.parse(this.content, this.parseOptions);
 
     traverse(ast, this.dependenciesCollection(dependencies, dirname));
 
-    const { code } = babel.transformFromAst(ast, null, {
-      presets: ['@babel/preset-env'],
-    });
+    const { code } = babel.transformFromAst(ast, null, this.babelrc);
 
     return new Module({
       fileName,
@@ -38,6 +36,6 @@ module.exports = class compiler {
         const modulePath = resolve.sync(moduleId, { basedir: dirname });
         dependencies[moduleId] = modulePath;
       },
-    }
+    };
   }
 };

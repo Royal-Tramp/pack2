@@ -34,7 +34,12 @@ module.exports = class Dependencies {
   }
   moduleAnalyser(fileName) {
     const content = this.pack2.fileSystem.read(fileName);
-    const compiler = new Compiler({ fileName, content });
+    const compiler = new Compiler({
+      fileName,
+      content,
+      parseOptions: this.pack2.options.parseOptions,
+      babelrc: this.pack2.options.babelrc,
+    });
     return compiler.compile();
   }
   createGraphJSON(graph, sourceMap) {

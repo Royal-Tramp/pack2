@@ -15,6 +15,11 @@
     "object-hash": "^2.0.3",
     "regenerator-runtime": "^0.13.7",
     "resolve": "^1.17.0",
-    "underscore": "^1.11.0"
+    "underscore": "^1.11.0",
+    "vue": "^2.6.12"
+  },
+  "devDependencies": {
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
+    "@vue/babel-preset-jsx": "^1.1.2"
   }
 }

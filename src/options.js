@@ -6,4 +6,11 @@ module.exports = {
   server: false,
   evaluation: false,
   compress: false,
+  parseOptions: {
+    sourceType: 'module',
+    plugins: [],
+  },
+  babelrc: {
+    presets: ['@babel/preset-env'],
+  },
 };
