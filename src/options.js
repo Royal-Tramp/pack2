@@ -2,6 +2,8 @@ module.exports = {
   rootPath: '',
   entry: 'src/index.js',
   output: 'dist',
+  library: 'CubeSdk',
+  libraryTarget: 'umd',
   watch: false,
   server: false,
   evaluation: false,

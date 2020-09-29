@@ -80,6 +80,8 @@ class Pack2 extends EventEmitter {
       entryPath: this.entryPath,
       graphJSON,
       env: this.options.env,
+      library: this.options.library,
+      libraryTarget: this.options.libraryTarget,
     });
   }
   compressCode(code) {
