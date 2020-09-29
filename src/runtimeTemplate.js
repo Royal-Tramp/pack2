@@ -1,6 +1,8 @@
-module.exports = function ({ entryPath, graphJSON }) {
+module.exports = function ({ entryPath, graphJSON, env }) {
   return `(function(modules){
   var installedModules = {};
+  var process = ${JSON.stringify({ env })}
+  
   function require(moduleId) {
     
     if (installedModules[moduleId]) {
@@ -15,7 +17,7 @@ module.exports = function ({ entryPath, graphJSON }) {
 
     modules[moduleId].js.call(module.exports, module, module.exports, function(relativePath) {
       return require(modules[moduleId].dependencies[relativePath])
-    });
+    }, process);
 
     module.l = true;
 

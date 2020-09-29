@@ -6,15 +6,21 @@ module.exports = class Dependencies {
     this.pack2 = pack2;
   }
   make(entryPath) {
+    const hasAnalyseFileMap = {};
     const entryModule = this.moduleAnalyser(entryPath);
     const graphList = [entryModule];
-
     for (let i = 0; i < graphList.length; i++) {
       const module = graphList[i];
       const { dependencies } = module;
       if (dependencies) {
         for (let j in dependencies) {
-          graphList.push(this.moduleAnalyser(dependencies[j]));
+          if (this.pack2.options.debug) {
+            console.log(dependencies[j]);
+          }
+          if (!hasAnalyseFileMap[j]) {
+            hasAnalyseFileMap[j] = true;
+            graphList.push(this.moduleAnalyser(dependencies[j]));
+          }
         }
       }
     }
@@ -26,7 +32,7 @@ module.exports = class Dependencies {
           js: `__${module.fileName}__`,
         };
         sourceMap[module.fileName] = {
-          code: `function(module, exports, require) {\n${module.code}\n}`,
+          code: `function(module, exports, require, process) {\n${module.code}\n}`,
         };
         return [graph, sourceMap];
       },

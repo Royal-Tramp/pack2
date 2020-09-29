@@ -11,7 +11,14 @@ const Dependencies = require('./dependencies.js');
 const Watch = require('./Watch.js');
 const runtimeTemplate = require('./runtimeTemplate.js');
 const hookNames = require('./hookNames.js');
-const { BUILD_START, BUILD_END, BUILD_CHANGE } = hookNames;
+const {
+  LIFE_GOES_ON,
+  BUILD_START,
+  BUILD_END,
+  BUILD_CHANGE,
+  COMPRESS_BEFORE,
+  COMPRESS_AFTER,
+} = hookNames;
 
 class Pack2 extends EventEmitter {
   constructor(options = {}) {
@@ -29,9 +36,11 @@ class Pack2 extends EventEmitter {
     this.fileSystem = new FileSystem(this);
     this.dependencies = new Dependencies(this);
     this.watch = new Watch(this);
+    this.compress = UglifyJS.minify;
     this.init();
   }
   init() {
+    this.emit(LIFE_GOES_ON, this);
     this.pluginSystem.init();
   }
   build() {
@@ -70,10 +79,13 @@ class Pack2 extends EventEmitter {
     return runtimeTemplate({
       entryPath: this.entryPath,
       graphJSON,
+      env: this.options.env,
     });
   }
   compressCode(code) {
-    const result = UglifyJS.minify(code);
+    this.emit(COMPRESS_BEFORE, this);
+    const result = this.compress(code);
+    this.emit(COMPRESS_AFTER, this);
     return result.code;
   }
   removeDist() {
