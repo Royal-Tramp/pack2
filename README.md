@@ -189,7 +189,7 @@ module.exports = {
 | COMPILER_PARSE_BEFORE    | compiler parse before     |
 | COMPILER_PARSE_AFTER     | compiler parse after      |
 | COMPILER_TRANSFORM_BEFORE| compiler transform before |
-| COMPILER_TRANSFORM_AFTER | compiler transform before |
+| COMPILER_TRANSFORM_AFTER | compiler transform after |
 | COMPRESS_BEFORE          | compress before           |
 | COMPRESS_AFTER           | compress after            |
 | DEPEND_GRAPH             | create depend graph before|
