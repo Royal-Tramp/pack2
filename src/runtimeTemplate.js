@@ -1,5 +1,5 @@
 function getUMDTemplate(content, { library }) {
-  return `(function packUniversalModuleDefinition(root, factory) {
+	return `(function packUniversalModuleDefinition(root, factory) {
     if(typeof exports === 'object' && typeof module === 'object')
       module.exports = factory();
     else if(typeof define === 'function' && define.amd)
@@ -18,7 +18,7 @@ function getUMDTemplate(content, { library }) {
 }
 
 module.exports = function ({ entryPath, graphJSON, env, library, libraryTarget }) {
-  const defaultTemplate = `(function(modules){
+	const defaultTemplate = `(function(modules){
     var installedModules = {};
     var process = ${JSON.stringify({ env })}
     
@@ -45,8 +45,8 @@ module.exports = function ({ entryPath, graphJSON, env, library, libraryTarget }
     return require('${entryPath}')
   })(${graphJSON})
   `;
-  if (libraryTarget === 'umd') {
-    return getUMDTemplate(defaultTemplate, { library });
-  }
-  return defaultTemplate;
+	if (libraryTarget === 'umd') {
+		return getUMDTemplate(defaultTemplate, { library });
+	}
+	return defaultTemplate;
 };

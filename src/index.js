@@ -12,96 +12,96 @@ const Watch = require('./Watch.js');
 const runtimeTemplate = require('./runtimeTemplate.js');
 const hookNames = require('./hookNames.js');
 const {
-  LIFE_GOES_ON,
-  BUILD_START,
-  BUILD_END,
-  BUILD_CHANGE,
-  COMPRESS_BEFORE,
-  COMPRESS_AFTER,
+	LIFE_GOES_ON,
+	BUILD_START,
+	BUILD_END,
+	BUILD_CHANGE,
+	COMPRESS_BEFORE,
+	COMPRESS_AFTER,
 } = hookNames;
 
 class Pack2 extends EventEmitter {
-  constructor(options = {}) {
-    super();
-    this.options = mergeOptions.call(
-      {
-        concatArrays: true,
-        ignoreUndefined: true,
-      },
-      defaultOptions,
-      options
-    );
-    this.entryPath = path.resolve(this.options.rootPath, this.options.entry);
-    this.pluginSystem = new PluginSystem(this);
-    this.fileSystem = new FileSystem(this);
-    this.dependencies = new Dependencies(this);
-    this.watch = new Watch(this);
-    this.compress = UglifyJS.minify;
-    this.init();
-  }
-  init() {
-    this.emit(LIFE_GOES_ON, this);
-    this.pluginSystem.init();
-  }
-  build() {
-    return pipe([
-      through(() => this.emit(BUILD_START)),
-      this.analyseDependencies.bind(this),
-      this.options.watch
-        ? through(([graph, sourceMap]) => this.watchDependencies([graph, sourceMap]))
-        : through(),
-      this.generateCode.bind(this),
-      this.options.compress ? this.compressCode.bind(this) : through(),
-      through(() => this.removeDist()),
-      through((code) => this.generateBundle(code)),
-      through(() => this.emit(BUILD_END)),
-    ])(this.entryPath);
-  }
-  analyseDependencies(entryPath) {
-    return this.dependencies.make(entryPath);
-  }
-  watchDependencies([graph, sourceMap]) {
-    this.watch.addGraph(graph).on('change', () => {
-      console.log(chalk.blue('dependencies changed!'));
-      this.emit(BUILD_CHANGE);
-      return pipe([
-        through(() => this.emit(BUILD_START)),
-        this.analyseDependencies.bind(this),
-        this.generateCode.bind(this),
-        this.options.compress ? this.compressCode.bind(this) : through(),
-        through((code) => this.generateBundle(code)),
-        through(() => this.emit(BUILD_END)),
-      ])(this.entryPath);
-    });
-  }
-  generateCode([graph, sourceMap]) {
-    const graphJSON = this.dependencies.createGraphJSON(graph, sourceMap);
-    return runtimeTemplate({
-      entryPath: this.entryPath,
-      graphJSON,
-      env: this.options.env,
-      library: this.options.library,
-      libraryTarget: this.options.libraryTarget,
-    });
-  }
-  compressCode(code) {
-    this.emit(COMPRESS_BEFORE, this);
-    const result = this.compress(code);
-    this.emit(COMPRESS_AFTER, this);
-    return result.code;
-  }
-  removeDist() {
-    const distPath = path.resolve(this.options.rootPath, this.options.output);
-    this.fileSystem.remove(distPath);
-  }
-  generateBundle(code) {
-    const bundlePath = path.resolve(this.options.rootPath, this.options.output, './bundle.js');
-    this.fileSystem.write(bundlePath, code);
-  }
+	constructor(options = {}) {
+		super();
+		this.options = mergeOptions.call(
+			{
+				concatArrays: true,
+				ignoreUndefined: true,
+			},
+			defaultOptions,
+			options
+		);
+		this.entryPath = path.resolve(this.options.rootPath, this.options.entry);
+		this.pluginSystem = new PluginSystem(this);
+		this.fileSystem = new FileSystem(this);
+		this.dependencies = new Dependencies(this);
+		this.watch = new Watch(this);
+		this.compress = UglifyJS.minify;
+		this.init();
+	}
+	init() {
+		this.emit(LIFE_GOES_ON, this);
+		this.pluginSystem.init();
+	}
+	build() {
+		return pipe([
+			through(() => this.emit(BUILD_START)),
+			this.analyseDependencies.bind(this),
+			this.options.watch
+				? through(([graph, sourceMap]) => this.watchDependencies([graph, sourceMap]))
+				: through(),
+			this.generateCode.bind(this),
+			this.options.compress ? this.compressCode.bind(this) : through(),
+			through(() => this.removeDist()),
+			through((code) => this.generateBundle(code)),
+			through(() => this.emit(BUILD_END)),
+		])(this.entryPath);
+	}
+	analyseDependencies(entryPath) {
+		return this.dependencies.make(entryPath);
+	}
+	watchDependencies([graph, sourceMap]) {
+		this.watch.addGraph(graph).on('change', () => {
+			console.log(chalk.blue('dependencies changed!'));
+			this.emit(BUILD_CHANGE);
+			return pipe([
+				through(() => this.emit(BUILD_START)),
+				this.analyseDependencies.bind(this),
+				this.generateCode.bind(this),
+				this.options.compress ? this.compressCode.bind(this) : through(),
+				through((code) => this.generateBundle(code)),
+				through(() => this.emit(BUILD_END)),
+			])(this.entryPath);
+		});
+	}
+	generateCode([graph, sourceMap]) {
+		const graphJSON = this.dependencies.createGraphJSON(graph, sourceMap);
+		return runtimeTemplate({
+			entryPath: this.entryPath,
+			graphJSON,
+			env: this.options.env,
+			library: this.options.library,
+			libraryTarget: this.options.libraryTarget,
+		});
+	}
+	compressCode(code) {
+		this.emit(COMPRESS_BEFORE, this);
+		const result = this.compress(code);
+		this.emit(COMPRESS_AFTER, this);
+		return result.code;
+	}
+	removeDist() {
+		const distPath = path.resolve(this.options.rootPath, this.options.output);
+		this.fileSystem.remove(distPath);
+	}
+	generateBundle(code) {
+		const bundlePath = path.resolve(this.options.rootPath, this.options.output, './bundle.js');
+		this.fileSystem.write(bundlePath, code);
+	}
 }
 
 function pack2(options) {
-  return new Pack2(options);
+	return new Pack2(options);
 }
 
 Object.keys(hookNames).map((name) => (pack2[name] = name));
