@@ -27,6 +27,7 @@ module.exports = class compiler {
 		const fileName = this.fileName;
 		const dirname = path.dirname(fileName);
 		const dependencies = {};
+		const importedValues = [];
 
 		this.pack2.emit(COMPILER_PARSE_BEFORE, this);
 
@@ -36,7 +37,7 @@ module.exports = class compiler {
 
 		this.traverse(
 			this.ast,
-			this.dependenciesCollection(dependencies, dirname, this.pack2.options.alias)
+			this.dependenciesCollection(dependencies, importedValues, dirname, this.pack2.options.alias)
 		);
 
 		this.pack2.emit(COMPILER_TRANSFORM_BEFORE, this);
@@ -48,10 +49,11 @@ module.exports = class compiler {
 		return new Module({
 			fileName,
 			dependencies,
+			importedValues,
 			code,
 		});
 	}
-	dependenciesCollection(dependencies, dirname, alias) {
+	dependenciesCollection(dependencies, importedValues, dirname, alias) {
 		function moduleASTHandler(moduleId) {
 			let modulePath = '';
 			const [aliasKey, aliasPath] = getAliasPath(moduleId, alias);
@@ -69,6 +71,11 @@ module.exports = class compiler {
 		}
 		return {
 			ImportDeclaration({ node }) {
+				node.specifiers.forEach((val) => {
+					if (val.imported) {
+						importedValues.push(val.imported.name);
+					}
+				});
 				moduleASTHandler(node.source.value);
 			},
 			CallExpression({ node }) {

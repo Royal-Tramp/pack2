@@ -9,10 +9,12 @@ module.exports = class Dependencies {
 		const hasAnalyseFileMap = {};
 		const entryModule = this.moduleAnalyser(entryPath);
 		const graphList = [entryModule];
+		let importedValueList = [];
 		for (let i = 0; i < graphList.length; i++) {
 			const module = graphList[i];
-			const { dependencies } = module;
+			const { dependencies, importedValues } = module;
 			if (dependencies) {
+				importedValueList = importedValueList.concat(importedValues);
 				for (let j in dependencies) {
 					if (this.pack2.options.debug) {
 						console.log(dependencies[j]);
