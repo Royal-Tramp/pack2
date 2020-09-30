@@ -36,6 +36,10 @@ Options:
 
 Modules
 
+```bash
+$ npm install --save-dev https://github.com/Royal-Tramp/pack2
+```
+
 ```js
 const pack2 = require('pack2');
 const config = require('./pack.config.js');
