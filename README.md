@@ -14,6 +14,12 @@ Pack2 is a mini module bundler for JavaScript, the name comes from my favorite r
 $ npm install -g https://github.com/Royal-Tramp/pack2
 ```
 
+Syntax parsing depends on Babel, so you need to install Babel package.
+
+```bash
+$ npm install --save-dev @babel/core @babel/preset-env
+```
+
 ## Usage
 
 Commands
