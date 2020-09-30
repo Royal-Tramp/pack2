@@ -11,7 +11,7 @@ Pack2 is a mini module bundler for JavaScript, the name comes from my favorite r
 ## Install
 
 ```bash
-npm install -g https://github.com/Royal-Tramp/pack2
+$ npm install -g https://github.com/Royal-Tramp/pack2
 ```
 
 ## Usage
@@ -40,12 +40,16 @@ compiler.build();
 
 ## Config
 
+Pack2 will search by default `pack.config.js` In your project root directory.
+
 #### `rootPath`
 default: `''`
+
 `rootPath` allows you to specify the base path for all the assets within your application.
 
 #### `entry`
 default: `'src/index.js'`
+
 Your entry file path, eg:
 
 ```js
@@ -56,6 +60,7 @@ module.exports = {
 
 #### `output`
 default: `'dist'`
+
 Write the compiled files to disk, eg:
 
 ```js
@@ -66,6 +71,7 @@ module.exports = {
 
 #### `library`
 default: `''`
+
 How the value of the `library` is used depends on the value of the `libraryTarget`; please refer to that section for the complete details. eg:
 
 ```js
@@ -77,18 +83,22 @@ module.exports = {
 
 #### `libraryTarget`
 default: `''`
+
 These options assign the return value of the entry point to a specific object under the name defined by `library`
 
 #### `watch`
 default: `false`
+
 Listen for file changes and rebuild.
 
 #### `compress`
 default: `false`
+
 Compress generated files.
 
 #### `env`
 default: `{}`
+
 You can configure environment variables to make distinctions in your code. eg:
 
 `pack.config.js`
@@ -107,6 +117,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 #### `alias`
 default: `{}`
+
 Create aliases to `import` or `require` certain modules more easily. eg:
 
 ```js
@@ -131,6 +142,7 @@ import Button from 'component/Button';
 
 #### `debug`
 default: `false`
+
 Display the relevant build information.
 
 ## Plug-in
